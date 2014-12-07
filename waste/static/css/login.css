@@ -41,3 +41,10 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
+.error{
+  width: 26%;
+margin-bottom: -30px;
+margin-right: auto;
+margin-left: auto;
+color: #e74c3c;
+}
