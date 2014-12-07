@@ -1,0 +1,62 @@
+.form-container{
+	width: 70%;
+margin-top: 5%;
+margin-right: auto;
+margin-left: auto;
+margin-bottom: 6%;
+}
+
+.form-table{
+	width: 100%;
+}
+
+lable{
+	margin-right : 5px;
+}
+
+.branding{
+	width: 38%;
+	margin-top: 2%;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 3%;
+}
+
+a{
+	text-decoration: none;
+
+}
+
+select {
+	width: 60%;
+} 
+
+option { 
+	width: 100%; 
+}
+
+label{
+	color:#848484;
+}
+
+.success-message{
+	margin-top: 7%;
+width: 18%;
+margin-right: auto;
+margin-left: auto;
+}
+
+#green{
+	color:#2ecc71;
+}
+
+.logout{
+width:1%;
+float: right;
+margin-top: -84px;
+margin-right: 3%;
+}
+
+.panel-text{
+
+}

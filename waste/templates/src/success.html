@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}
+        <title>
+            Form
+        </title> 
+    {% endblock %}
+</head>
+<body>
+	{% block content %}
+	<div class='success-message'>
+		<h4>Data Saved <span id='green'>Successfully</span></h4>
+	</div>
+	{% endblock %}
+</body>
+</html>
