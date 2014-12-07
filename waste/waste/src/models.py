@@ -23,6 +23,7 @@ class WasteGenerated(models.Model):
 	category = models.ForeignKey(Category)
 	description = models.ForeignKey(Description)
 	quantity = models.FloatField()
+	date = models.DateField(auto_now_add = True)
 	def __unicode__(self):
 		return '%s' % (self.id)
 
@@ -31,6 +32,7 @@ class WasteStored(models.Model):
 	category = models.ForeignKey(Category)
 	description = models.ForeignKey(Description)
 	quantity = models.FloatField()
+	date = models.DateField(auto_now_add = True)
 	def __unicode__(self):
 		return '%s' % (self.id)
 
@@ -39,5 +41,6 @@ class WasteSentToRecycler(models.Model):
 	category = models.ForeignKey(Category)
 	description = models.ForeignKey(Description)
 	quantity = models.FloatField()
+	date = models.DateField(auto_now_add = True)
 	def __unicode__(self):
 		return '%s' % (self.id)
