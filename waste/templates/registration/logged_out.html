@@ -20,15 +20,8 @@
 
     <div class="container">
         <form action="{{ app_path }}" method="post" class="form-signin" role="form" id="login-form">{% csrf_token %}
-        <h2 class="form-signin-heading">User Login</h2>
-        <label for="inputEmail" class="sr-only">Email address</label>
-<input id="id_username" class="form-control" placeholder="User" maxlength="254" name="username" type="text" />
-
-        <label for="inputPassword" class="sr-only">Password</label>
-        <input id="id_password" name="password" class="form-control" placeholder="Password" type="password" />
-    <input type="hidden" name="this_is_the_login_form" value="1" />
-    <input type="hidden" name="next" value="/admin/" />
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <h3>Logged Out</h3>
+        <a href='/'><button class="btn btn-lg btn-primary btn-block" type="button">Login Again</button></a>
       </form>
 
     </div> <!-- /container -->

@@ -33,6 +33,7 @@ select {
 
 option { 
 	width: 100%; 
+	text-align:left;
 }
 
 label{

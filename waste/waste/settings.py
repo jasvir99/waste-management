@@ -14,7 +14,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'waste',
-        'USER': 'root',
+        'USER': 'jasvir',
         'PASSWORD': 'grewal',
         'HOST': 'localhost',
         'PORT': '',
@@ -46,7 +46,7 @@ STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    '/home/jass/testing/waste/waste/static',
+    '/home/jasvir/waste-management/waste/static',
 )
 
 STATICFILES_FINDERS = (
@@ -96,7 +96,7 @@ INSTALLED_APPS = (
 
 
 ACCOUNT_ACTIVATION_DAYS = 7
-LOGIN_REDIRECT_URL = '/'
+#LOGIN_REDIRECT_URL = ''
 LOGIN_URL = '/admin/login'
 
 LOGGING = {
