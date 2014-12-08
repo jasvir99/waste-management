@@ -35,7 +35,8 @@ def add_selection(request):
 		message = 'Selections Saved '
 		return render(request,'src/success.html',{'message':message})
 	else:
-		form = UserSelectionForm()
+		user = request.user
+		form = UserSelectionForm(request=request)
 		return render(request,'src/selection.html',{'form':form})
 
 @login_required
