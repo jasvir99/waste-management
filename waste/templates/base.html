@@ -8,12 +8,13 @@
     {% block js %}
     <script src='http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js'>
         </script>
+    <script src="{% static 'js/ie-emulation-modes-warning.js' %}"></script>
      <script type="text/javascript">
      $(document).ready(function(){
      $('#gen_description').attr('disabled', 'disabled');
      $('#store_description').attr('disabled', 'disabled');
      $('#sent_description').attr('disabled', 'disabled');
-     $('#gen_category').click(function(){
+     $('#gen_category').change(function(){
         $('#gen_description').empty();
         $('#gen_description').removeAttr('disabled');
         cat_id = $(this).val();
@@ -28,7 +29,7 @@
             }
        })
      })
-     $('#store_category').click(function(){
+     $('#store_category').change(function(){
         $('#store_description').empty();
         $('#store_description').removeAttr('disabled');
         cat_id = $(this).val();
@@ -43,7 +44,7 @@
             }
        })
      })
-     $('#sent_category').click(function(){
+     $('#sent_category').change(function(){
         $('#sent_description').empty();
         $('#sent_description').removeAttr('disabled');
         cat_id = $(this).val();
@@ -63,20 +64,41 @@
     {% endblock %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/offcanvas.css' %}" >
 
 </head>
 <body>
-    <div class='top-wrapper'>
-    <div class='branding'>
-           <a href='{% url 'waste.src.views.main_form' %}'> <h2>Guru Nanak Dev Engineering College</h2></a>
-    </div>
-    <div class='logout'>
-    <a href='{% url 'admin:logout' %}'><img src="{% static 'icons/Logout.png' %}"><span class="panel-text">Logout</span></a>
-</div>
-</div>
+    <nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href='#'>GNDEC</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href='{% url 'waste.src.views.main_form' %}'>Manage Waste</a></li>
+            <li><a href='{% url 'waste.src.views.add_selection' %}'>Add Selections</a></li>
+            <li><a href='{% url 'waste.src.views.generate_report' %}'>Report</a></li>
+            <li><a href='{% url 'admin:logout' %}'>Logout</a></li>
+          </ul>
+        </div><!-- /.nav-collapse -->
+      </div><!-- /.container -->
+    </nav><!-- /.navbar -->
     <div class="container">
         
     {% block content %}
     {% endblock %}
 </div>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="{% static 'js/ie10-viewport-bug-workaround.js' %}"></script>
+
+    <script src="{% static 'js/offcanvas.js' %}"></script>
 </body>
+</html>

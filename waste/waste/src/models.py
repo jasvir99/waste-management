@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 class Department(models.Model):
@@ -42,5 +42,12 @@ class WasteSentToRecycler(models.Model):
 	description = models.ForeignKey(Description)
 	quantity = models.FloatField()
 	date = models.DateField(auto_now_add = True)
+	def __unicode__(self):
+		return '%s' % (self.id)
+
+class UserSelections(models.Model):
+	user = models.ForeignKey(User)
+	category = models.ForeignKey(Category)
+	description = models.ForeignKey(Description)
 	def __unicode__(self):
 		return '%s' % (self.id)

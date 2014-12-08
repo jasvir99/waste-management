@@ -48,3 +48,12 @@ class WasteSentToRecyclerForm(forms.Form):
 		self.fields['sent_waste_category'].widget.attrs={'id': 'sent_category','class':'btn btn-default dropdown-toggle'}
 		self.fields['sent_waste_description'].widget.attrs={'id':'sent_description','class':'btn btn-default dropdown-toggle'}
 		self.fields['sent_waste_quantity'].widget.attrs={'id':'sent_quantity','placeholder':'Kilogram'}
+
+class UserSelectionForm(forms.Form):
+	information_technology_and_telecommunication_equipment = forms.\
+	ModelMultipleChoiceField(required=True,widget=forms.CheckboxSelectMultiple,\
+	queryset= Description.objects.filter(category = 1))
+
+	consumer_electrical_and_electronics = forms.ModelMultipleChoiceField(required = \
+		True, widget = forms.CheckboxSelectMultiple, queryset = Description.\
+		objects.filter(category = 2))

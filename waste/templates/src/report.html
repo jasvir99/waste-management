@@ -1,0 +1,38 @@
+{% extends 'report_base.html' %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}
+        <title>
+            Report
+        </title> 
+    {% endblock %}
+</head>
+<body>
+	{% block content %}
+	<div class='branding-report'>
+		<h3>Records Of E-Waste Handeled/Generated</h3>
+	</div>
+<table class='report' border='1px'>
+	<tr>
+		<th>Name & Address</th>
+		<td>{{org}}<br>{{add}}</td>
+	</tr>
+	<tr>
+		<th>Total E-Waste Generated</th>
+		<td>{{waste_generated.quantity__sum}} Kg</td>
+	</tr>
+	<tr>
+		<th>Total E-Waste Stored</th>
+		<td>{{waste_stored.quantity__sum}} Kg</td>
+	</tr>
+	<tr>
+		<th>Total E-Waste Sent to Recycler</th>
+		<td>{{waste_sent.quantity__sum}} Kg</td>
+	</tr>
+</table>
+{% endblock %}
+</body>
+</html>

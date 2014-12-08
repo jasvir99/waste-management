@@ -10,7 +10,8 @@
     <meta name="author" content="">
     <title>Login</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
   </head>
 
@@ -18,7 +19,11 @@
 
     <div class="container">
 	<div class="error">
-        {% if form.errors.items|length == 1 %}<div class="alert alert-danger" role="alert">{% trans "Invalid username and password." %}</div>{% endif %}
+        {% if form.errors.items|length == 1 %}<div class="alert alert-danger" role="alert">
+  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+  <span class="sr-only">Error:</span>
+  Invalid Username and Password 
+</div>{% endif %}
     </div>         
         <form action="{{ app_path }}" method="post" class="form-signin" role="form" id="login-form">{% csrf_token %}
         <h2 class="form-signin-heading">User Login</h2>

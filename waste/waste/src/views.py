@@ -1,13 +1,43 @@
 from django.shortcuts import render
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from waste.src.forms import *
 from waste.src.models import *
+from waste.config import _ORGANISATION
+from waste.config import _ADDRESS
 from django.contrib.auth.decorators import login_required
 import simplejson
+from django.db.models import Sum
+from django.core.urlresolvers import reverse
 
 # Create your tests here.
+@login_required
+def add_selection(request):
+	if request.method == 'POST':
+		user = request.user
+		list_it = request.POST.\
+			getlist('information_technology_and_telecommunication_equipment')
+		for id in list_it:
+			category = Category.objects.get(pk=1)
+			description = Description.objects.get(pk=id)
+			selections = UserSelections(user = user, category = category, \
+				description = description)
+			selections.save()
+		list_elect = request.POST.getlist('consumer_electrical_and_electronics')
+		for id in list_elect:
+			category = Category.objects.get(pk=2)
+			description = Description.objects.get(pk=id)
+			selections = UserSelections(user = user, category = category, \
+				description = description)
+			selections.save()
+
+		message = 'Selections Saved '
+		return render(request,'src/success.html',{'message':message})
+	else:
+		form = UserSelectionForm()
+		return render(request,'src/selection.html',{'form':form})
+
 @login_required
 def main_form(request):
 	if request.method == 'POST':
@@ -41,9 +71,16 @@ def main_form(request):
 				description = description, quantity = quantity)
 			sent.save()
 			
-			return render(request,'src/success.html',{})
+			message = 'Data Saved '
+			return render(request,'src/success.html',{'message':message})
 
 	else:
+		user = request.user
+		user_selections = UserSelections.objects.filter(user=user)
+		if user_selections:
+			pass
+		else:
+			return HttpResponseRedirect(reverse('waste.src.views.add_selection'))
 		dept_form = DepartmentSelect()
 		waste_gen = WasteGeneratedForm()
 		waste_stored = WasteStoredForm()
@@ -54,9 +91,21 @@ def main_form(request):
 
 def get_description(request):
 	category = request.GET['cat_id']
+	user = request.user
 	description_dict = {}
 	description_dict['0'] = '--------------'
-	description = Description.objects.filter(category=category)
+	user_description = UserSelections.objects.values_list('description',flat=True).filter(category=category).\
+		filter(user=user)
+	description = Description.objects.filter(id__in = user_description)
 	for value in description:
 		description_dict[value.id] = value.description
 	return HttpResponse(simplejson.dumps(description_dict))
+
+def generate_report(request):
+	org = _ORGANISATION
+	add = _ADDRESS
+	waste_generated = WasteGenerated.objects.all().aggregate(Sum('quantity'))
+	waste_stored = WasteStored.objects.all().aggregate(Sum('quantity'))
+	waste_sent = WasteSentToRecycler.objects.all().aggregate(Sum('quantity'))
+	return render(request,'src/report.html',{'waste_generated':waste_generated,
+		'waste_sent':waste_sent,'waste_stored':waste_stored,'org':org,'add':add})
