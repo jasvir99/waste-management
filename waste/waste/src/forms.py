@@ -1,5 +1,6 @@
 from django import forms
 from waste.src.models import *
+from django.db.models import Q
 
 class DepartmentSelect(forms.Form):
 	select_department = forms.ModelChoiceField(queryset=Department.objects.all())
@@ -50,10 +51,15 @@ class WasteSentToRecyclerForm(forms.Form):
 		self.fields['sent_waste_quantity'].widget.attrs={'id':'sent_quantity','placeholder':'Kilogram'}
 
 class UserSelectionForm(forms.Form):
+	try:
+		user = request.user
+	except:
+		user = 1
+	desc_id = UserSelections.objects.values_list('description', flat=True).filter(user=user)
 	information_technology_and_telecommunication_equipment = forms.\
 	ModelMultipleChoiceField(required=True,widget=forms.CheckboxSelectMultiple,\
-	queryset= Description.objects.filter(category = 1))
+	queryset= Description.objects.filter(category = 1).filter(~Q(id__in=desc_id)))
 
 	consumer_electrical_and_electronics = forms.ModelMultipleChoiceField(required = \
 		True, widget = forms.CheckboxSelectMultiple, queryset = Description.\
-		objects.filter(category = 2))
+		objects.filter(category = 2).filter(~Q(id__in=desc_id)))
