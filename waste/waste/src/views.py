@@ -95,7 +95,7 @@ def get_description(request):
 	user = request.user
 	description_dict = {}
 	description_dict['0'] = '--------------'
-	user_description = UserSelections.objects.values_UserActivatedlist('description',flat=True).filter(category=category).\
+	user_description = UserSelections.objects.values_list('description',flat=True).filter(category=category).\
 		filter(user=user)
 	description = Description.objects.filter(id__in = user_description)
 	for value in description:

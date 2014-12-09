@@ -46,7 +46,11 @@ option {
 
 label{
 	color:#6B6B6B;
-	width: 444px;
+
+}
+
+td{
+	width:50%;
 }
 
 .success-message{
