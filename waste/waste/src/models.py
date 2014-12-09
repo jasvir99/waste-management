@@ -51,3 +51,7 @@ class UserSelections(models.Model):
 	description = models.ForeignKey(Description)
 	def __unicode__(self):
 		return '%s' % (self.id)
+
+class UserActivated(models.Model):
+	user = models.ForeignKey(User)
+	activated = models.BooleanField(default = False)

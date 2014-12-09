@@ -95,7 +95,7 @@ def get_description(request):
 	user = request.user
 	description_dict = {}
 	description_dict['0'] = '--------------'
-	user_description = UserSelections.objects.values_list('description',flat=True).filter(category=category).\
+	user_description = UserSelections.objects.values_UserActivatedlist('description',flat=True).filter(category=category).\
 		filter(user=user)
 	description = Description.objects.filter(id__in = user_description)
 	for value in description:
@@ -110,3 +110,14 @@ def generate_report(request):
 	waste_sent = WasteSentToRecycler.objects.all().aggregate(Sum('quantity'))
 	return render(request,'src/report.html',{'waste_generated':waste_generated,
 		'waste_sent':waste_sent,'waste_stored':waste_stored,'org':org,'add':add})
+
+@login_required
+def new_login(request):
+	user = request.user
+	active = UserActivated.objects.filter(user=user)
+	if active:
+		return HttpResponseRedirect(reverse('waste.src.views.main_form'))
+	else:
+		activate = UserActivated(user=user,activated=True)
+		activate.save()
+		return HttpResponseRedirect(reverse('admin:password_change'))

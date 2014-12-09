@@ -15,16 +15,56 @@
 	<div class='form-container'>
 	<form role="form" method="POST" action=''>
 		            {% csrf_token %}
-    <div class="form-group">{{dept_form.as_p}}</div>
+     <table class='form-table-main'>
+    	<div class="form-group">
+    	{% for fields in dept_form %}
+    	<tr>
+    		<td><label for="gen_category">{{ fields.label_tag }}</label></td>
+			
+		<td>{{ fields }}</td>
+	</tr>
+	{% endfor %}
+	</div>
+</table>
     <hr>
     <h3>E-waste handled/generated</h3>
-	<div class="form-group">{{waste_gen.as_p}}</div>
+    <table class='form-table-main'>
+    	<div class="form-group">
+    	{% for fields in waste_gen %}
+    	<tr>
+    		<td><label for="gen_category">{{ fields.label_tag }}</label></td>
+			
+		<td>{{ fields }}</td>
+	</tr>
+	{% endfor %}
+	</div>
+</table>
 	<hr>
 	<h3>E-waste stored</h3>
-	<div class="form-group">{{waste_stored.as_p}}</div>
+	<table class='form-table-main'>
+    	<div class="form-group">
+    	{% for fields in waste_stored %}
+    	<tr>
+    		<td><label for="gen_category">{{ fields.label_tag }}</label></td>
+			
+		<td>{{ fields }}</td>
+	</tr>
+	{% endfor %}
+	</div>
+</table>
 	<hr>
 	<h3>E-waste sent to recycler</h3>
-	<div class="form-group">{{waste_sent.as_p}}</div>
+	<table class='form-table-main'>
+    	<div class="form-group">
+    	{% for fields in waste_sent %}
+    	<tr>
+    		<td><label for="gen_category">{{ fields.label_tag }}</label></td>
+			
+		<td>{{ fields }}</td>
+	</tr>
+	{% endfor %}
+	</div>
+</table>
 	<hr>
 
 <input type="submit" class="btn btn-info btn-large" value="Submit Information">
