@@ -1,0 +1,57 @@
+td{
+	width:64%;
+}
+
+th{
+	width:50%;
+}
+
+#green{
+	color:#2ecc71;
+}
+
+
+.report{
+	width: 100%;
+	height: 180px;
+}
+
+
+.container-report{
+	width: 50%;
+margin-left: auto;
+margin-right: auto;
+margin-top: 2%;
+}
+
+.branding-report{
+	width: 66%;
+	margin-top: 2%;
+	margin-right: auto;
+	margin-left: auto;
+	margin-bottom: 3%;
+}
+.report-in{
+width:100%;
+}
+
+table {
+  border-collapse: collapse;
+}
+table td, table th {
+  border: 1px solid black;
+}
+table tr:first-child th {
+  border-top: 0;
+}
+table tr:last-child td {
+  border-bottom: 0;
+}
+table tr td:first-child,
+table tr th:first-child {
+  border-left: 0;
+}
+table tr td:last-child,
+table tr th:last-child {
+  border-right: 0;
+}

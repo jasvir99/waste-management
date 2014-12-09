@@ -13,6 +13,7 @@
 <body>
 	{% block content %}
 	<div class='branding-report'>
+
 		<h3>Records Of E-Waste Handeled/Generated</h3>
 	</div>
 <table class='report' border='1px'>
@@ -22,15 +23,54 @@
 	</tr>
 	<tr>
 		<th>Total E-Waste Generated</th>
-		<td>{{waste_generated.quantity__sum}} Kg</td>
+		<td><table class='report-in'>
+			{% for value in waste_generated %}
+			<tr>
+				<td><b>Category</b><br><p>{{value.category.category}}</p></td>
+				<td><b>Quantity</b><br><p>{{value.total}} Kg</p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><b>Description</b><br>{% for item in value.desc %}
+					<p>{{forloop.counter}}. {{item}}</p>{% endfor %}</td>
+			</tr>
+			{% endfor %}
+		</table>
+
+				</td>
 	</tr>
 	<tr>
 		<th>Total E-Waste Stored</th>
-		<td>{{waste_stored.quantity__sum}} Kg</td>
+		<td><table class='report-in'>
+			{% for value in waste_stored %}
+			<tr>
+				<td><b>Category</b><br><p>{{value.category.category}}</p></td>
+				<td><b>Quantity</b><br><p>{{value.total}} Kg</p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><b>Description</b><br>{% for item in value.desc %}
+					<p>{{forloop.counter}}. {{item}}</p>{% endfor %}</td>
+			</tr>
+			{% endfor %}
+		</table>
+
+				</td>
 	</tr>
 	<tr>
 		<th>Total E-Waste Sent to Recycler</th>
-		<td>{{waste_sent.quantity__sum}} Kg</td>
+		<td><table class='report-in'>
+			{% for value in waste_sent %}
+			<tr>
+				<td><b>Category</b><br><p>{{value.category.category}}</p></td>
+				<td><b>Quantity</b><br><p>{{value.total}} Kg</p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><b>Description</b><br>{% for item in value.desc %}
+					<p>{{forloop.counter}}. {{item}}</p>{% endfor %}</td>
+			</tr>
+			{% endfor %}
+		</table>
+
+				</td>
 	</tr>
 </table>
 {% endblock %}

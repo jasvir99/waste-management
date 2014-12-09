@@ -11,6 +11,10 @@ import simplejson
 from django.db.models import Sum
 from django.core.urlresolvers import reverse
 
+from waste.src.helper import calculate_generated
+from waste.src.helper import calculate_stored
+from waste.src.helper import calculate_sent
+
 # Create your tests here.
 @login_required
 def add_selection(request):
@@ -105,9 +109,9 @@ def get_description(request):
 def generate_report(request):
 	org = _ORGANISATION
 	add = _ADDRESS
-	waste_generated = WasteGenerated.objects.all().aggregate(Sum('quantity'))
-	waste_stored = WasteStored.objects.all().aggregate(Sum('quantity'))
-	waste_sent = WasteSentToRecycler.objects.all().aggregate(Sum('quantity'))
+	waste_generated = calculate_generated()
+	waste_stored = calculate_stored()
+	waste_sent = calculate_sent()
 	return render(request,'src/report.html',{'waste_generated':waste_generated,
 		'waste_sent':waste_sent,'waste_stored':waste_stored,'org':org,'add':add})
 
