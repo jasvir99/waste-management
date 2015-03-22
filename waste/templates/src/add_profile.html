@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %}
+        <title>
+            Profile
+        </title> 
+    {% endblock %}
+</head>
+<body>
+{% block content %}
+    <div class='form-container'>
+        
+{% if dept %}
+<table class='table table-hover table-stripped'>
+    <tr>
+        <th>Title</th>
+        <td>{{dept.title}}</td>
+    </tr>
+    <tr>
+        <th>Head Of Deapartment</th>
+        <td>{{dept.head}}</td>
+    </tr>
+    <tr>
+        <th>Contact</th>
+        <td>{{dept.contact}}</td>
+    </tr>
+    <tr>
+        <td><a href='{% url 'waste.src.views.edit_profile' %}'><button class="btn btn-info btn-large">Edit Profile</button></a></td>
+    </tr>
+</table>
+    {% else %}
+<form action="" method="post">{% csrf_token %}
+<div>
+{% if form.errors %}
+    
+{% endif %}
+<div class='form-container-pass'>
+    <h3 id='form-header'>Profile</h3>
+    <br>
+
+<fieldset class="module aligned wide">
+    {% if form_redirected == 1 %}
+        <h4 class="text-danger" >Before starting, create profile.</h4>
+        {% endif %}
+<table>
+    <tr>
+<div class="form-row">
+   <th> <label for="id_old_password" class="required">{% trans 'Title' %}:</label></th>
+   <td>{{ form.title}}</td>
+</div>
+</tr>
+<tr>
+<div class="form-row">
+    <td><label for="id_new_password1" class="required">{% trans 'Head of Department' %}:</label></td>
+    <td>{{ form.head }}</td>
+</div>
+</tr>
+<tr>
+<div class="form-row">
+    <td><label for="id_new_password2" class="required">{% trans 'Contact' %}:</label></td>
+    <td>{{ form.contact}}</td>
+
+</div>
+</tr>
+</table>
+<input type="submit" class="btn btn-info btn-large" value="Create Profile">
+</fieldset>
+<br>
+
+</div>
+</div>
+</form>
+{% endif %}
+</div>
+
+{% endblock %}
+</body>

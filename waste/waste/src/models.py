@@ -3,9 +3,12 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 class Department(models.Model):
-	name = models.CharField(max_length=400)
+	user = models.ForeignKey(User)
+	title = models.CharField(max_length=400, blank=False, null=False)
+	head = models.CharField(max_length=100,blank=False, null=False)
+	contact = models.IntegerField(blank=False, null=False)
 	def __unicode__(self):
-		return '%s' % (self.name)
+		return '%s' % (self.title)
 
 class Category(models.Model):
 	category = models.CharField(max_length=300)

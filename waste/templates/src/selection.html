@@ -13,10 +13,13 @@
 <body>
 	{% block content %}
 	<div class='form-container'>
+        {% if form_redirected == 1 %}
+        <h4 class="text-danger" >Before starting waste management, please select categories in which you deal</h4>
+        {% endif %}
 	<form role="form" method="POST" action=''>
 		            {% csrf_token %}
     <div class="form-group">{{form}}</div>
-    <input type="submit" class="btn btn-info btn-large" value="Submit Selection">
+    <input type="submit" class="btn btn-info btn-large" value="Submit">
 </form>
 
 </div>

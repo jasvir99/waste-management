@@ -39,19 +39,69 @@ def add_selection(request):
 		message = 'Selections Saved '
 		return render(request,'src/success.html',{'message':message})
 	else:
+		try:
+			form_redirected = request.session.get('redirected')
+			user = request.user
+			form = UserSelectionForm(request=request)
+			request.session['redirected'] = ''
+			return render(request,'src/selection.html',{'form':form, 
+				'form_redirected':form_redirected})
+		except:
+			user = request.user
+			form = UserSelectionForm(request=request)
+			return render(request,'src/selection.html',{'form':form})
+
+@login_required
+def add_profile(request):
+	if request.method == 'POST':
+		form = DepartmentProfileForm(request.POST)
+		if form.is_valid():
+			title = form.cleaned_data['title']
+			head = form.cleaned_data['head']
+			contact = form.cleaned_data['contact']
+			user = request.user
+			Department(user=user, title=title, head=head, contact=contact).\
+			save()
+			message = 'Profile Saved '
+			return render(request,'src/success.html',{'message':message})
+		else:
+			form = DepartmentProfileForm(request.POST)
+			return render(request, 'src/add_profile.html',{'form':form})
+
+	else:
 		user = request.user
-		form = UserSelectionForm(request=request)
-		return render(request,'src/selection.html',{'form':form})
+		dept = Department.objects.filter(user=user.id)
+		if dept:
+			dept = Department.objects.get(user=user.id)
+			return render(request, 'src/add_profile.html',{'dept':dept})
+		else:
+			try:
+				form_redirected = request.session.get('redirected')
+				user = request.user
+				form = UserSelectionForm(request=request)
+				request.session['redirected'] = ''
+				form = DepartmentProfileForm()
+				return render(request, 'src/add_profile.html',{'form':form,
+					'form_redirected':form_redirected})
+			except:
+				form = DepartmentProfileForm()
+				return render(request, 'src/add_profile.html',{'form':form})
 
 @login_required
 def main_form(request):
 	if request.method == 'POST':
-		dept_form = DepartmentSelect(request.POST)
+		user = request.user
 		waste_gen = WasteGeneratedForm(request.POST)
 		waste_stored = WasteStoredForm(request.POST)
 		waste_sent = WasteSentToRecyclerForm(request.POST)
-		if dept_form.is_valid():
-			department = Department.objects.get(name = dept_form.cleaned_data['select_department'])
+		try:
+			dept_form = DepartmentSelect(request.POST)
+			if dept_form.is_valid():
+				department = Department.objects.get(name = dept_form.cleaned_data['select_department'])
+			else:
+				department = Department.objects.get(user=user.id)
+		except:
+			department = Department.objects.get(user=user.id)
 		if waste_gen.is_valid():
 			category = Category.objects.get(category=waste_gen.cleaned_data['generated_waste_category'])
 			description = Description.objects.get(description=waste_gen.cleaned_data['generated_waste_description'])
@@ -85,15 +135,25 @@ def main_form(request):
 		if user_selections:
 			pass
 		else:
+			request.session['redirected'] = 1
 			return HttpResponseRedirect(reverse('waste.src.views.add_selection'))
+
+		department = Department.objects.filter(user=user.id)
+		if department:
+			pass
+
+		else:
+			request.session['redirected'] = 1
+			return HttpResponseRedirect(reverse('waste.src.views.add_profile'))
 		dept_form = DepartmentSelect()
 		waste_gen = WasteGeneratedForm()
 		waste_stored = WasteStoredForm()
 		waste_sent = WasteSentToRecyclerForm()
 		forms = {'dept_form':dept_form,'waste_gen': waste_gen,
-		'waste_stored': waste_stored,'waste_sent':waste_sent}
+		'waste_stored': waste_stored,'waste_sent':waste_sent,'user':user}
 		return render(request,'src/form.html',forms)
 
+@login_required
 def get_description(request):
 	category = request.GET['cat_id']
 	user = request.user
@@ -106,14 +166,40 @@ def get_description(request):
 		description_dict[value.id] = value.description
 	return HttpResponse(simplejson.dumps(description_dict))
 
+@login_required
 def generate_report(request):
 	org = _ORGANISATION
 	add = _ADDRESS
-	waste_generated = calculate_generated()
-	waste_stored = calculate_stored()
-	waste_sent = calculate_sent()
+	is_superuser = request.user.is_superuser
+	waste_generated = calculate_generated(request)
+	waste_stored = calculate_stored(is_superuser,request)
+	waste_sent = calculate_sent(request)
 	return render(request,'src/report.html',{'waste_generated':waste_generated,
 		'waste_sent':waste_sent,'waste_stored':waste_stored,'org':org,'add':add})
+
+
+
+@login_required
+def edit_profile(request):
+	if request.method == 'POST':
+		form = DepartmentProfileForm(request.POST)
+		if form.is_valid():
+			title = form.cleaned_data['title']
+			head = form.cleaned_data['head']
+			contact = form.cleaned_data['contact']
+			user = request.user
+			Department.objects.filter(user=user.id).update(user=user, title=title, head=head, contact=contact)
+			message = 'Profile Saved '
+			return render(request,'src/success.html',{'message':message})
+		else:
+			form = DepartmentProfileForm(request.POST)
+			return render(request, 'src/add_profile.html',{'form':form})
+
+	else:
+		user = request.user
+		dept = Department.objects.get(user=user.id)
+		form = DepartmentProfileForm(instance=dept)
+		return render(request, 'src/add_profile.html',{'form':form})
 
 @login_required
 def new_login(request):
@@ -124,4 +210,4 @@ def new_login(request):
 	else:
 		activate = UserActivated(user=user,activated=True)
 		activate.save()
-		return HttpResponseRedirect(reverse('admin:password_change'))
+		return HttpResponseRedirect(reverse('waste.src.views.add_profile'))

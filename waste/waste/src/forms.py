@@ -66,3 +66,8 @@ class UserSelectionForm(forms.Form):
 			queryset= Description.objects.filter(category = 1).filter(~Q(id__in=desc_id))
 		self.fields['consumer_electrical_and_electronics'].\
 			queryset= Description.objects.filter(category = 2).filter(~Q(id__in=desc_id))
+
+class DepartmentProfileForm(forms.ModelForm):
+	class Meta:
+		model = Department
+		exclude = ['user']

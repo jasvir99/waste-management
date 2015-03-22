@@ -17,6 +17,7 @@
 		            {% csrf_token %}
      <table class='form-table-main'>
     	<div class="form-group">
+    		{% if user.is_superuser %}
     	{% for fields in dept_form %}
     	<tr>
     		<td><label for="gen_category">{{ fields.label_tag }}</label></td>
@@ -24,6 +25,7 @@
 		<td>{{ fields }}</td>
 	</tr>
 	{% endfor %}
+	{% endif %}
 	</div>
 </table>
     <hr>
