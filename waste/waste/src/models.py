@@ -23,8 +23,8 @@ class Description(models.Model):
 
 class WasteGenerated(models.Model):
 	department = models.ForeignKey(Department)
-	category = models.ForeignKey(Category)
-	description = models.ForeignKey(Description)
+	category = models.ForeignKey(Category, blank=True, null=True)
+	description = models.ForeignKey(Description, blank=True, null=True)
 	quantity = models.FloatField()
 	date = models.DateField(auto_now_add = True)
 	def __unicode__(self):

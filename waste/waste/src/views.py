@@ -14,6 +14,9 @@ from django.core.urlresolvers import reverse
 from waste.src.helper import calculate_generated
 from waste.src.helper import calculate_stored
 from waste.src.helper import calculate_sent
+#from django.forms.formsets import formset_factory
+from django.forms.models import modelformset_factory
+import itertools
 
 # Create your tests here.
 @login_required
@@ -91,9 +94,7 @@ def add_profile(request):
 def main_form(request):
 	if request.method == 'POST':
 		user = request.user
-		waste_gen = WasteGeneratedForm(request.POST)
-		waste_stored = WasteStoredForm(request.POST)
-		waste_sent = WasteSentToRecyclerForm(request.POST)
+		
 		try:
 			dept_form = DepartmentSelect(request.POST)
 			if dept_form.is_valid():
@@ -102,32 +103,14 @@ def main_form(request):
 				department = Department.objects.get(user=user.id)
 		except:
 			department = Department.objects.get(user=user.id)
-		if waste_gen.is_valid():
-			category = Category.objects.get(category=waste_gen.cleaned_data['generated_waste_category'])
-			description = Description.objects.get(description=waste_gen.cleaned_data['generated_waste_description'])
-			quantity = waste_gen.cleaned_data['generated_waste_quantity']
-			generated = WasteGenerated(department = department,category = category,\
-				description = description, quantity = quantity)
-			generated.save()
+		for quantity, category, description in itertools.izip(request.POST.getlist("quantity"), request.POST.getlist("category"), request.POST.getlist("description")):
+		#for quantity in request.POST.getlist("quantity") and category in request.POST.getlist("category"):
+			cat = Category.objects.get(id=category)
+			desc = Description.objects.get(id=description)
+			WasteGenerated(department = department, quantity=quantity,category=cat, description=desc).save()
 
-		if waste_stored.is_valid():
-			category = Category.objects.get(category=waste_stored.cleaned_data['stored_waste_category'])
-			description = Description.objects.get(description=waste_stored.cleaned_data['stored_waste_description'])
-			quantity = waste_stored.cleaned_data['stored_waste_quantity']
-			stored = WasteStored(department = department,category = category,\
-				description = description, quantity = quantity)
-			stored.save()
-
-		if waste_sent.is_valid():
-			category = Category.objects.get(category=waste_sent.cleaned_data['sent_waste_category'])
-			description = Description.objects.get(description=waste_sent.cleaned_data['sent_waste_description'])
-			quantity = waste_sent.cleaned_data['sent_waste_quantity']
-			sent = WasteSentToRecycler(department = department,category = category,\
-				description = description, quantity = quantity)
-			sent.save()
-			
-			message = 'Data Saved '
-			return render(request,'src/success.html',{'message':message})
+		message = 'Data Saved '
+		return render(request,'src/success.html',{'message':message})
 
 	else:
 		user = request.user
@@ -146,12 +129,17 @@ def main_form(request):
 			request.session['redirected'] = 1
 			return HttpResponseRedirect(reverse('waste.src.views.add_profile'))
 		dept_form = DepartmentSelect()
-		waste_gen = WasteGeneratedForm()
+		waste_gen = WasteGeneratedForm(instance=WasteGenerated())
+		#formsets = WasteFormSet()
 		waste_stored = WasteStoredForm()
 		waste_sent = WasteSentToRecyclerForm()
-		forms = {'dept_form':dept_form,'waste_gen': waste_gen,
-		'waste_stored': waste_stored,'waste_sent':waste_sent,'user':user}
+		category = Category.objects.all()
+		description = Description.objects.all()
+		forms = {'dept_form':dept_form,#'formset': formset,
+		'waste_stored': waste_stored,'waste_sent':waste_sent,'user':user,
+		'category': category,'description':description,'waste_gen':waste_gen}
 		return render(request,'src/form.html',forms)
+
 
 @login_required
 def get_description(request):

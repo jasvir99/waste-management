@@ -30,48 +30,37 @@
 </table>
     <hr>
     <h3>E-waste handled/generated</h3>
+
     <table class='form-table-main'>
     	<div class="form-group">
-    	{% for fields in waste_gen %}
-    	<tr>
-    		<td><label for="gen_category">{{ fields.label_tag }}</label></td>
+		{% for cat in category %}
+    	
+    		<td rowspan="37">{{cat.category}}</td>
 			
-		<td>{{ fields }}</td>
-	</tr>
-	{% endfor %}
-	</div>
-</table>
-	<hr>
-	<h3>E-waste stored</h3>
-	<table class='form-table-main'>
-    	<div class="form-group">
-    	{% for fields in waste_stored %}
-    	<tr>
-    		<td><label for="gen_category">{{ fields.label_tag }}</label></td>
 			
-		<td>{{ fields }}</td>
-	</tr>
-	{% endfor %}
-	</div>
-</table>
-	<hr>
-	<h3>E-waste sent to recycler</h3>
-	<table class='form-table-main'>
-    	<div class="form-group">
-    	{% for fields in waste_sent %}
+		{% for desc in description %}
+			{% if cat.id == desc.category_id %}  
     	<tr>
-    		<td><label for="gen_category">{{ fields.label_tag }}</label></td>
+			<td>{{desc.description}}</td>
+		
 			
-		<td>{{ fields }}</td>
-	</tr>
-	{% endfor %}
-	</div>
-</table>
-	<hr>
+		<td><input type="number" name="quantity" value=0 >
+	<input type="hidden" name="category" value="{{cat.id}}" >
+<input type="hidden" name="description" value="{{desc.id}}"</td>
+{% endif %}
 
-<input type="submit" class="btn btn-info btn-large" value="Submit Information">
-</form>
+	
+	{% endfor %}
+	</tr>
+			
+	{% endfor %}
 
+
+	<tr>
+<input type="submit" value="Submit"></tr></table>
 </div>
+</table></form>
+	<hr>
+	
     {% endblock %}
 </body>
