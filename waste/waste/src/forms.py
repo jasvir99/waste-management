@@ -8,19 +8,26 @@ class DepartmentSelect(forms.Form):
 		super(DepartmentSelect, self).__init__(*args, **kwargs)
 		self.fields['select_department'].widget.attrs={'id': 'department','class':'btn btn-default dropdown-toggle'}
 
-class WasteGeneratedForm(forms.Form):
-	try:
-		generated_waste_category = forms.ModelChoiceField(queryset=Category.objects.all())
-		generated_waste_description = forms.ModelChoiceField(queryset = Description.objects.all())
-		generated_waste_quantity = forms.FloatField()
-	except:
-		pass
+class WasteGeneratedForm(forms.ModelForm):
+	#try:
+		#generated_waste_category = forms.ModelChoiceField(queryset=Category.objects.all())
+		#generated_waste_description = forms.ModelChoiceField(queryset = Description.objects.all())
+	quantity = forms.FloatField()
+	#except:
+		#pass
 
-	def __init__(self, *args, **kwargs):
-		super(WasteGeneratedForm, self).__init__(*args, **kwargs)
-		self.fields['generated_waste_category'].widget.attrs={'id': 'gen_category', 'class':'btn btn-default dropdown-toggle'}
-		self.fields['generated_waste_description'].widget.attrs={'id':'gen_description','class':'btn btn-default dropdown-toggle'}
-		self.fields['generated_waste_quantity'].widget.attrs={'id':'gen_quantity','placeholder':'Kilogram'}
+	class Meta:
+		model = WasteGenerated
+		#exclude = ['department',]
+		
+		fields = ["quantity", "category", "description","department"]
+		widgets = {
+      'category': forms.HiddenInput(),
+	  'description': forms.HiddenInput(),
+	  'department': forms.HiddenInput(),
+	
+    }
+
 
 class WasteStoredForm(forms.Form):
 	try:
