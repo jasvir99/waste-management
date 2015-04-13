@@ -28,58 +28,6 @@ class WasteGeneratedForm(forms.ModelForm):
 	
     }
 
-		'''def __init__(self, *args, **kwargs):
-			is_hidden = kwargs.pop('is_hidden', None)
-			super(WasteGeneratedForm, self).__init__(*args, **kwargs)
-			self.fields['quantity'].widget.attrs={'id':'quantity','placeholder':'Kilogram'}
-			if is_hidden:
-				self.fields['category'].widget = forms.HiddenInput()
-				self.fields['description'].widget = forms.HiddenInput()
-				self.fields['department'].widget = forms.HiddenInput()'''
-
-	'''def __init__(self, *args, **kwargs):
-		super(WasteGeneratedForm, self).__init__(*args, **kwargs)
-		#self.fields['generated_waste_category'].widget.attrs={'id': 'gen_category', 'class':'btn btn-default dropdown-toggle'}
-		#self.fields['generated_waste_description'].widget.attrs={'id':'gen_description','class':'btn btn-default dropdown-toggle'}
-		self.fields['generated_waste_quantity'].widget.attrs={'id':'gen_quantity','placeholder':'Kilogram'}'''
-
-	'''def __init__(self, *args, **kwargs):
-		super(WasteGeneratedForm, self).__init__(*args, **kwargs)
-        #combine object_type and object_id into a single 'generic_obj' field
-        #getall the objects that we want the user to be able to choose from
-		waste_category = list(Category.objects.all()) #put your stuff here
-       
-        #now create our list of choices for the <select> field
-		waste = []
-		for wc in waste_category:
-			waste_description = Description.objects.get(id=1)
-		#	for wd in waste_description:
-			wc_id = wc.id
-			form_value = "type:%s-id:%s" % (wc_id, waste_description.id) #e.g."type:12-id:3"
-			display_text = str(wc)
-			waste.append([form_value, display_text])
-		
-		self.fields['generated_waste_quantity'].widget.attrs=waste
-	
-	class Meta:
-		model = WasteGenerated
-		fields = [
-			"generated_waste_quantity"
-		]
-
-	def save(self, *args, **kwargs):
-        #get object_type and object_id values from combined generic_obj field
-		object_string = self.cleaned_data['generated_waste_quantity']
-		matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
-		category_id = matches[0] #get 45 from "type:45-id:38"
-		description_id = matches[1] #get 38 from "type:45-id:38"
-		generated_waste_category = Category.objects.get(id=category_id)
-		generated_waste_description = Description.objects.get(id=description_id)
-		self.cleaned_data['generated_waste_category'] = category_id
-		self.cleaned_data['generated_waste_description'] = description_id
-		self.instance.generated_waste_category = category_id
-		self.instance.generated_waste_description = description_id
-		return super(WasteGeneratedForm, self).save(*args, **kwargs)'''
 
 class WasteStoredForm(forms.Form):
 	try:
