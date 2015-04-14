@@ -104,14 +104,13 @@ def main_form(request):
 		except:
 			department = Department.objects.get(user=user.id)
 		for quantity, category, description in itertools.izip(request.POST.getlist("quantity"), request.POST.getlist("category"), request.POST.getlist("description")):
-		#for quantity in request.POST.getlist("quantity") and category in request.POST.getlist("category"):
-			cat = Category.objects.get(id=category)
-			desc = Description.objects.get(id=description)
-			WasteGenerated(department = department, quantity=quantity,category=cat, description=desc).save()
-
+			if quantity != "0":
+				cat = Category.objects.get(id=category)
+				desc = Description.objects.get(id=description)
+				WasteGenerated(department = department, quantity=quantity,category=cat, description=desc).save()
+							
 		message = 'Data Saved '
 		return render(request,'src/success.html',{'message':message})
-
 	else:
 		user = request.user
 		user_selections = UserSelections.objects.filter(user=user)
@@ -133,11 +132,11 @@ def main_form(request):
 		#formsets = WasteFormSet()
 		waste_stored = WasteStoredForm()
 		waste_sent = WasteSentToRecyclerForm()
-		category = Category.objects.all()
-		description = Description.objects.all()
+		#category = Category.objects.all()
+		#description = Description.objects.all()
 		forms = {'dept_form':dept_form,#'formset': formset,
 		'waste_stored': waste_stored,'waste_sent':waste_sent,'user':user,
-		'category': category,'description':description,'waste_gen':waste_gen}
+		'user_selections': user_selections,'waste_gen':waste_gen}
 		return render(request,'src/form.html',forms)
 
 
