@@ -33,34 +33,26 @@
 
     <table class='form-table-main'>
     	<div class="form-group">
-		{% for cat in category %}
-    	
-    		<td rowspan="37">{{cat.category}}</td>
-			
-			
-		{% for desc in description %}
-			{% if cat.id == desc.category_id %}  
+		{% for select in user_selections %}
     	<tr>
-			<td>{{desc.description}}</td>
+    		<td >{{select.category}}</td>
+    	
+			<td>{{select.description}}</td>
 		
 			
-		<td><input type="number" name="quantity" value=0 >
-	<input type="hidden" name="category" value="{{cat.id}}" >
-<input type="hidden" name="description" value="{{desc.id}}"</td>
-{% endif %}
+		<td><input type="number" name="quantity" min="0" value="0" >
+	<input type="hidden" name="category" value="{{select.category_id}}" >
+<input type="hidden" name="description" value="{{select.description_id}}"</td>
 
-	
-	{% endfor %}
 	</tr>
-			
 	{% endfor %}
-
-
-	<tr>
-<input type="submit" value="Submit"></tr></table>
+	
 </div>
-</table></form>
-	<hr>
+</table>
+<hr>
+<center><input type="submit" value="Submit"></center>
+</form>
+	
 	
     {% endblock %}
 </body>
