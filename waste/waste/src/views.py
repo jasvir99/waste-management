@@ -103,17 +103,60 @@ def main_form(request):
 				department = Department.objects.get(user=user.id)
 		except:
 			department = Department.objects.get(user=user.id)
-		for quantity, category, description in itertools.izip(request.POST.getlist("quantity"), request.POST.getlist("category"), request.POST.getlist("description")):
-			if quantity != "0":
-				cat = Category.objects.get(id=category)
-				desc = Description.objects.get(id=description)
-				WasteGenerated(department = department, quantity=quantity,category=cat, description=desc).save()
-							
-		message = 'Data Saved '
-		return render(request,'src/success.html',{'message':message})
+		if request.POST['select_department']:
+			for quantity, category, description in itertools.izip(request.POST.getlist("quantity"), request.POST.getlist("category"), request.POST.getlist("description")):
+				if quantity != "0":
+					cat = Category.objects.get(id=category)
+					desc = Description.objects.get(id=description)
+					WasteGenerated(department = department, quantity=quantity,category=cat, description=desc).save()
+
+			for quantity, category, description in itertools.izip(request.POST.getlist("qquantity"), request.POST.getlist("qcategory"), request.POST.getlist("qdescription")):
+				if quantity != "0":
+					cat = Category.objects.get(id=category)
+					desc = Description.objects.get(id=description)
+					WasteSentToRecycler(department = department, quantity=quantity,category=cat, description=desc).save()							
+			for quantity, category, description in itertools.izip(request.POST.getlist("cquantity"), request.POST.getlist("ccategory"), request.POST.getlist("cdescription")):
+				if  quantity != "0":
+					cat = Category.objects.get(id=category)
+					desc = Description.objects.get(id=description)
+					WasteStored(department = department, quantity=quantity,category=cat, description=desc).save()											
+		
+			message = 'Data Saved '
+			return render(request,'src/success.html',{'message':message})
+		else:			
+			user = request.user
+			user_selections = UserSelections.objects.filter(user=user, category_id=1)
+			user_selections_two = UserSelections.objects.filter(user=user, category_id=2)
+			if user_selections:
+				pass
+			else:
+				request.session['redirected'] = 1
+				return HttpResponseRedirect(reverse('waste.src.views.add_selection'))
+
+			department = Department.objects.filter(user=user.id)
+			if department:
+				pass
+
+			else:
+ 				request.session['redirected'] = 1
+ 				return HttpResponseRedirect(reverse('waste.src.views.add_profile'))
+ 			dept_form = DepartmentSelect()
+ 			waste_gen = WasteGeneratedForm(instance=WasteGenerated())
+			#formsets = WasteFormSet()
+	 		waste_stored = WasteStoredForm()
+			waste_sent = WasteSentToRecyclerForm()
+ 			#category = Category.objects.all()
+			#description = Description.objects.all()
+			message = 'Please Select Department'
+			forms = {'dept_form':dept_form,#'formset': formset,
+			'waste_stored': waste_stored,'waste_sent':waste_sent,'user':user,
+			'user_selections': user_selections,'user_selections_two': user_selections_two,
+			'waste_gen':waste_gen,'message':message}
+			return render(request,'src/form.html',forms)			
 	else:
 		user = request.user
-		user_selections = UserSelections.objects.filter(user=user)
+		user_selections = UserSelections.objects.filter(user=user, category_id=1)
+		user_selections_two = UserSelections.objects.filter(user=user, category_id=2)
 		if user_selections:
 			pass
 		else:
@@ -125,24 +168,25 @@ def main_form(request):
 			pass
 
 		else:
-			request.session['redirected'] = 1
-			return HttpResponseRedirect(reverse('waste.src.views.add_profile'))
-		dept_form = DepartmentSelect()
-		waste_gen = WasteGeneratedForm(instance=WasteGenerated())
+ 			request.session['redirected'] = 1
+ 			return HttpResponseRedirect(reverse('waste.src.views.add_profile'))
+ 		dept_form = DepartmentSelect()
+ 		waste_gen = WasteGeneratedForm(instance=WasteGenerated())
 		#formsets = WasteFormSet()
-		waste_stored = WasteStoredForm()
+ 		waste_stored = WasteStoredForm()
 		waste_sent = WasteSentToRecyclerForm()
-		#category = Category.objects.all()
+ 		#category = Category.objects.all()
 		#description = Description.objects.all()
 		forms = {'dept_form':dept_form,#'formset': formset,
 		'waste_stored': waste_stored,'waste_sent':waste_sent,'user':user,
-		'user_selections': user_selections,'waste_gen':waste_gen}
+		'user_selections': user_selections,'user_selections_two': user_selections_two,
+		'waste_gen':waste_gen}
 		return render(request,'src/form.html',forms)
 
 
 @login_required
 def get_description(request):
-	category = request.GET['cat_id']
+	category =  request.GET['cat_id']
 	user = request.user
 	description_dict = {}
 	description_dict['0'] = '--------------'

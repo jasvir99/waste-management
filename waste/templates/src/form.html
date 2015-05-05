@@ -15,6 +15,8 @@
 	<div class='form-container'>
 	<form role="form" method="POST" action=''>
 		            {% csrf_token %}
+<div style="color:red">{{message}}</div>
+
      <table class='form-table-main'>
     	<div class="form-group">
     		{% if user.is_superuser %}
@@ -30,29 +32,108 @@
 </table>
     <hr>
     <h3>E-waste handled/generated</h3>
-
+ 
     <table class='form-table-main'>
+ 	 <tr>
+ 	   <th>
+ 	   Information Technology and Telecommunication equipment
+ 	   </th> 
+ 	 </tr>
     	<div class="form-group">
 		{% for select in user_selections %}
     	<tr>
-    		<td >{{select.category}}</td>
-    	
 			<td>{{select.description}}</td>
-		
-			
 		<td><input type="number" name="quantity" min="0" value="0" >
 	<input type="hidden" name="category" value="{{select.category_id}}" >
 <input type="hidden" name="description" value="{{select.description_id}}"</td>
-
 	</tr>
 	{% endfor %}
-	
+	<tr>
+	<th>
+	Consumer Electrical and Electronics
+	</th>
+	</tr>
+     	<div class="form-group">
+		{% for select in user_selections_two %}
+    	<tr>
+			<td>{{select.description}}</td>
+		<td><input type="number" name="quantity" min="0" value="0" >
+	<input type="hidden" name="category" value="{{select.category_id}}" >
+<input type="hidden" name="description" value="{{select.description_id}}"</td>
+	</tr>
+	{% endfor %}
+</div>
+</table>
+<h3>
+Types and Quantity of e-waste stored
+</h3> 
+    <table class='form-table-main'>
+ 	 <tr>
+ 	   <th>
+ 	   Information Technology and Telecommunication equipment
+ 	   </th> 
+ 	 </tr>
+    	<div class="form-group">
+		{% for select in user_selections %}
+    	<tr>
+			<td>{{select.description}}</td>
+		<td><input type="number" name="qquantity" min="0" value="0" >
+	<input type="hidden" name="qcategory" value="{{select.category_id}}" >
+<input type="hidden" name="qdescription" value="{{select.description_id}}"</td>
+	</tr>
+	{% endfor %}
+	<tr>
+	<th>
+	Consumer Electrical and Electronics
+	</th>
+	</tr>
+     	<div class="form-group">
+		{% for select in user_selections_two %}
+    	<tr>
+			<td>{{select.description}}</td>
+		<td><input type="number" name="qquantity" min="0" value="0" >
+	<input type="hidden" name="qcategory" value="{{select.category_id}}" >
+<input type="hidden" name="qdescription" value="{{select.description_id}}"</td>
+	</tr>
+	{% endfor %}
+</div>
+</table>
+<h3>
+Collection centre/registered dismantler or recycler
+</h3>
+     <table class='form-table-main'>
+ 	 <tr>
+ 	   <th>
+ 	   Information Technology and Telecommunication equipment
+ 	   </th> 
+ 	 </tr>
+    	<div class="form-group">
+		{% for select in user_selections %}
+    	<tr>
+			<td>{{select.description}}</td>
+		<td><input type="number" name="cquantity" min="0" value="0" >
+	<input type="hidden" name="ccategory" value="{{select.category_id}}" >
+<input type="hidden" name="cdescription" value="{{select.description_id}}"</td>
+	</tr>
+	{% endfor %}
+	<tr>
+	<th>
+	Consumer Electrical and Electronics
+	</th>
+	</tr>
+     	<div class="form-group">
+		{% for select in user_selections_two %}
+    	<tr>
+			<td>{{select.description}}</td>
+		<td><input type="number" name="cquantity" min="0" value="0" >
+	<input type="hidden" name="ccategory" value="{{select.category_id}}" >
+<input type="hidden" name="cdescription" value="{{select.description_id}}"</td>
+	</tr>
+	{% endfor %}
 </div>
 </table>
 <hr>
 <center><input type="submit" value="Submit"></center>
 </form>
-	
-	
     {% endblock %}
 </body>
