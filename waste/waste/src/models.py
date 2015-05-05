@@ -6,7 +6,7 @@ class Department(models.Model):
 	user = models.ForeignKey(User)
 	title = models.CharField(max_length=400, blank=False, null=False)
 	head = models.CharField(max_length=100,blank=False, null=False)
-	contact = models.IntegerField(blank=False, null=False)
+	contact = models.CharField(blank=False, null=False,max_length=10)
 	def __unicode__(self):
 		return '%s' % (self.title)
 

@@ -15,7 +15,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'waste',
         'USER': 'root',
-        'PASSWORD': 'grewal',
+        'PASSWORD': 'sofat',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -46,7 +46,7 @@ STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    '/home/jass/testing/waste/waste-management/waste/static',
+    '/home/sofat/waste-management/waste/static',
 )
 
 STATICFILES_FINDERS = (
